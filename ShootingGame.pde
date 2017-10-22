@@ -29,7 +29,6 @@ void setup(){
  for(int i=0;i<playersMount;i++){
    players[i] = new Player();
  }
- gameScreenControl();
  //frameRate(60);
 }
 

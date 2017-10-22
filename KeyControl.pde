@@ -2,43 +2,17 @@ int generalMoveSpeed = 6;
 boolean[] isLeft = new boolean[4],isRight = new boolean[4],
           isUp = new boolean[4], isDown = new boolean[4], isFire = new boolean[4];
 
+SmallGun ss = new SmallGun();
+
 void keyPressed() {
-  setMove(keyCode, true);
+  playerButtonControl(keyCode, true);
 }
 
 void keyReleased() {
-  setMove(keyCode, false);
+  playerButtonControl(keyCode, false);
 }
 
-void keyControl(){
-  
-  for(int i=0;i<playersMount;i++){
-    if (isLeft[i]){
-      players[i].left = true;
-      players[i].x -= generalMoveSpeed;
-    }
-    
-    if (isRight[i]){
-      players[i].left = false;
-      players[i].x += generalMoveSpeed;
-    }
-    
-    if (isDown[i]) ;
-    
-    if (isUp[i]){
-      
-      if(players[i].switchJump) jump(i);
-      
-    } 
-    
-    if (isFire[i]){
-      fire(i);
-    }
-  }
-  
-}
-
-boolean setMove(int keyP, boolean switchP) {
+boolean playerButtonControl(int keyP, boolean switchP) {
   switch (keyP) {
   //P1 control
   case 'W':
@@ -84,10 +58,44 @@ boolean setMove(int keyP, boolean switchP) {
   }
 }
 
+void keyControl(){
+  
+  for(int i=0;i<playersMount;i++){
+    if (isLeft[i]){
+      players[i].left = true;
+      players[i].x -= generalMoveSpeed;
+    }
+    
+    if (isRight[i]){
+      players[i].left = false;
+      players[i].x += generalMoveSpeed;
+    }
+    
+    if (isDown[i]) ;
+    
+    if (isUp[i]){
+      
+      if(players[i].switchJump) jump(i);
+      
+    } 
+    
+    if (isFire[i]){
+      if(ss.switchFire){
+        fire(i);
+      }
+      ss.coolDown();
+    }
+  }
+  
+}
+
+
+
 void jump(int playerIndex){
   players[playerIndex].speedVert = -20;
 }
 
+//set the position of the bullet for firing
 void fire(int playerIndex){
   //control the global bulletIndex 
   if(players[playerIndex].left) bulletLeftCounter++;
