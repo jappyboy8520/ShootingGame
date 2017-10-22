@@ -1,4 +1,5 @@
-int generalMoveSpeed = 6;
+float generalMoveSpeed = 3.0;
+float jumpSpeed = 6.0;
 boolean[] isLeft = new boolean[4],isRight = new boolean[4],
           isUp = new boolean[4], isDown = new boolean[4], isFire = new boolean[4];
 
@@ -90,9 +91,8 @@ void keyControl(){
 }
 
 
-
 void jump(int playerIndex){
-  players[playerIndex].speedVert = -20;
+  players[playerIndex].speedVert = -jumpSpeed;
 }
 
 //set the position of the bullet for firing
@@ -107,14 +107,14 @@ void fire(int playerIndex){
   
   //set the left bullet
   if(players[playerIndex].left){
-    bulletLeft[bulletLeftCounter].setPosition(playerIndex);
-    bulletLeft[bulletLeftCounter].visible=true;
+    bulletsLeft[bulletLeftCounter].setPosition(playerIndex);
+    bulletsLeft[bulletLeftCounter].visible=true;
   }
   
   //set the right bullet
   else{
-    bulletRight[bulletRightCounter].setPosition(playerIndex);
-    bulletRight[bulletRightCounter].visible=true;
+    bulletsRight[bulletRightCounter].setPosition(playerIndex);
+    bulletsRight[bulletRightCounter].visible=true;
   }
   
 }

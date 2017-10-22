@@ -10,7 +10,7 @@ class Player{
     left = false;
     switchJump = false;
     hp = 100;
-    damage = 0;
+    damage = 10;
   }
   
   void drawPlayer(){

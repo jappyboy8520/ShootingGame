@@ -1,10 +1,9 @@
 int bulletLeftMount = 200, bulletRightMount = 200;
-Bullet[] bulletLeft = new Bullet[bulletLeftMount];
-Bullet[] bulletRight = new Bullet[bulletRightMount];
+Bullet[] bulletsLeft = new Bullet[bulletLeftMount];
+Bullet[] bulletsRight = new Bullet[bulletRightMount];
 
 int barrierMount = 50;
-BarriersManager barriersManager = new BarriersManager();
-Barriers[] barrier = new Barriers[barrierMount];
+Barriers[] barriers = new Barriers[barrierMount];
 
 int playersMount = 4;
 Player[] players = new Player[playersMount];
@@ -15,21 +14,21 @@ void setup(){
  smooth();
  //left bullet
  for(int i=0;i<bulletLeftMount;i++){
-   bulletLeft[i] = new Bullet(true);
+   bulletsLeft[i] = new Bullet(true);
  }
  //right bullet
  for(int i=0;i<bulletRightMount;i++){
-   bulletRight[i] = new Bullet(false);
+   bulletsRight[i] = new Bullet(false);
  }
  //barrier
  for(int i=0;i<barrierMount;i++){
-   barrier[i] = new Barriers();
+   barriers[i] = new Barriers();
  }
  //players
  for(int i=0;i<playersMount;i++){
    players[i] = new Player();
  }
- //frameRate(60);
+ frameRate(120);
 }
 
 void draw(){

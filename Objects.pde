@@ -1,17 +1,21 @@
 int bulletLeftCounter = 0;
 int bulletRightCounter = 0;
 int barrierCounter = 0;
+float bulletSize = 10.0;
+float bulletSpeed = 20.0;
 
 class Bullet{
-  Bullet(boolean L){
-    if(L)speed = -25.0;
-    else speed = 25.0;
+  Bullet(boolean L){ 
+    if(L)speed = -bulletSpeed;
+    else speed = bulletSpeed;
     
     x=0.0;
     y=0.0;     
   }
 
   void setPosition(int playerIndex){
+    // after set the position the bullet can hurt
+    switchHurt = true;
     if(players[playerIndex].left){
       x=players[playerIndex].x-players[playerIndex].size*2;
       y=players[playerIndex].y + players[playerIndex].size;
@@ -24,7 +28,7 @@ class Bullet{
   }
   
   void show(){
-    line(x,y,x+10.0,y);
+    line(x,y,x+bulletSize,y);
   }
   
   void move(){
@@ -33,23 +37,27 @@ class Bullet{
       visible=false;
     }
     
+    //check hits the player
     for(int i=0;i<playersMount;i++){
-      
-      if(x >= players[i].x &&  x <= players[i].x+collisionSize &&
-         y >= players[i].y && y <= players[i].y+collisionSize*2){
+      if(x+bulletSize/2.0 >= players[i].x &&  x+bulletSize/2.0 <= players[i].x+collisionSize &&
+         y >= players[i].y && y <= players[i].y+collisionSize*2.0){
         players[i].hp -= damage;
+        //after damage the player the bullet become invalid
+        switchHurt = false;
         if(players[i].hp <= 0) gameOver();
       }
       
     }
+    
+    //check hits the barrier
     for(int i=0;i<50;i++){
       
-      if(x >= barrier[i].left &&  x <= barrier[i].right &&
-          y >= barrier[i].top && y <= barrier[i].bottom){
+      if(x >= barriers[i].left &&  x <= barriers[i].right &&
+          y >= barriers[i].top && y <= barriers[i].bottom){
        visible=false;
       }
-       if(x >= barrier[i].left && x <= barrier[i].right &&
-          y >= barrier[i].top && y <= barrier[i].bottom){
+       if(x >= barriers[i].left && x <= barriers[i].right &&
+          y >= barriers[i].top && y <= barriers[i].bottom){
        visible=false;
       }
       
@@ -57,19 +65,15 @@ class Bullet{
   }
 
   float x,y,speed,damage;
-  boolean visible=false;
-}
-
-class BarriersManager{
-  void generateBar(int barrierIndex, float x, float y, float wei, float hei){
-    fill(0,255,0);
-    rect(x,y,wei,hei);
-    barrier[barrierIndex].setPosition(x,y,wei,hei);
-  }
+  boolean visible = false, switchHurt = true;
 }
 
 class Barriers{
-  void setPosition(float x, float y, float wei, float hei){
+  void drawBarrier(float x, float y, float wei, float hei){
+    //draw
+    fill(0,255,0);
+    rect(x,y,wei,hei);
+    //set the edges of Barrier
     top = y;
     bottom = y+hei;
     left = x;
