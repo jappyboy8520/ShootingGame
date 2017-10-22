@@ -6,8 +6,8 @@ int barrierMount = 50;
 ObjectManager objectManager = new ObjectManager();
 Barriers[] barrier = new Barriers[barrierMount];
 
-int playerMount = 4;
-Player[] players = new Player[playerMount];
+int playersMount = 4;
+Player[] players = new Player[playersMount];
 
 void setup(){
  size(800,600); 
@@ -26,7 +26,7 @@ void setup(){
    barrier[i] = new Barriers();
  }
  //players
- for(int i=0;i<playerMount;i++){
+ for(int i=0;i<playersMount;i++){
    players[i] = new Player();
  }
  frameRate(60);
@@ -35,13 +35,12 @@ void setup(){
 void draw(){
   background(200);
   objectManager.generateBar();
-  drawPlayer1();
-  player1.drawPlayer();
+  players[0].drawPlayer();
+  players[1].drawPlayer();
   applyGravity();
   keepInScreen();
   bumpIntoBarrier();
   keyControl();
-  
   
   for(int i=0;i<bulletLeftMount;i++){
     if(bulletLeft[i].visible){
@@ -57,5 +56,7 @@ void draw(){
     }
   }
   
-  switchJump=false;
+  for(int i=0;i<playersMount;i++){
+    players[i].switchJump = false;
+  }
 }

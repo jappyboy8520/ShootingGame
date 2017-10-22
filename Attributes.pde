@@ -1,30 +1,30 @@
-float airfriction = 0.01;
-float gravity=1;
+void makeBounceBottom(float surface, int playerIndex) {
 
-void applyGravity() {
-  characterSpeedVert += gravity;
-  p1Y += characterSpeedVert;
-  characterSpeedVert -= (characterSpeedVert * airfriction);
+  players[playerIndex].y = surface-(players[playerIndex].size*2);
+  players[playerIndex].speedVert = 0;
+  players[playerIndex].switchJump = true;
+  
 }
 
-void makeBounceBottom(float surface) {
-  p1Y = surface-(characterSize*2);
-  characterSpeedVert = 0;
+void makeBounceTop(float surface, int playerIndex) {
+
+  players[playerIndex].y = surface;
+  players[playerIndex].speedVert = 0;
+  
 }
 
-void makeBounceTop(float surface) {
-  p1Y = surface;
-  characterSpeedVert = 0;
+void makeBounceLeft(float surface, int playerIndex){
+  
+  players[playerIndex].left = false;
+  players[playerIndex].x = surface;
+  players[playerIndex].speedVert = 0;
+  
 }
 
-void makeBounceLeft(float surface){
-  characterLeft = false;
-  p1X = surface;
-  characterSpeedVert = 0;
-}
-
-void makeBounceRight(float surface){
-  characterLeft = true;
-  p1X = surface-characterSize;
-  characterSpeedVert = 0;
+void makeBounceRight(float surface, int playerIndex){
+  
+  players[playerIndex].left = true;
+  players[playerIndex].x = surface-players[playerIndex].size;
+  players[playerIndex].speedVert = 0;
+  
 }

@@ -1,91 +1,103 @@
-void keepInScreen() {
-  // ball hits floor
-  if (p1Y+(characterSize*2) > height) { 
-    makeBounceBottom(height);
-    switchJump = true;
+float airfriction = 0.01;
+float gravity=1;
+int gameMode;
+
+void gameScreenControl(){
+  //0 : Main menu
+  if(gameMode==0){
+    
   }
   
-  // ball hits ceiling
-  if (p1Y < 0) {
-    makeBounceTop(0);
+  if(gameMode==1){
+    
   }
   
-  // ball hits left bound of Screen
-  if (p1X < 0){
-    makeBounceLeft(0);
+  if(gameMode==2){
+    
   }
-  
-  //ball hits right bound of Screen
-  if (p1X+(characterSize) > width){
-    makeBounceRight(width);
+  if(gameMode==3){
+    
   }
   
 }
 
+void applyGravity() {
+  for(int i=0;i<4;i++){
+    players[i].speedVert += gravity;
+    players[i].y += players[i].speedVert;
+    players[i].speedVert -= players[i].speedVert * airfriction;
+  }
+  
+}
+
+void keepInScreen() {
+  for(int i=0;i<playersMount;i++){
+    // ball hits floor
+    if (players[i].y+(players[i].size*2) > height) { 
+      makeBounceBottom(height, i);
+    }
+    
+    // ball hits ceiling
+    if (players[i].y < 0) {
+      makeBounceTop(0, i);
+    }
+    
+    // ball hits left bound of Screen
+    if (players[i].x < 0){
+      makeBounceLeft(0, i);
+    }
+    
+    //ball hits right bound of Screen
+    if (players[i].x+(players[i].size) > width){
+      makeBounceRight(width, i);
+    }
+  }
+}
+
 void bumpIntoBarrier(){
-  // ball hits floor of Barrier
-  /*if (p1Y+characterSize*2 >= 500 && p1Y+characterSize*2 <= 520 &&
-      p1X+characterSize >=100 && p1X <=200) { 
-    makeBounceBottom(500);
-    switchJump = true;
-  }
-  
-  // ball hits ceiling
-  if (p1Y >= 490 && p1Y <= 510 &&
-      p1X+characterSize >=100 && p1X <=200) {
-    makeBounceTop(510);
-  }
-  
-  // ball hits left bound of barrier
-  if (p1X >= 100 && p1X<=110 && p1Y+characterSize>=100 && p1Y+characterSize<=110){
-    makeBounceLeft(100);
-  }
-  
-  //ball hits right bound of barrier
-  if (p1X <= 200 && p1X >= 190 && p1Y+characterSize>=100 && p1Y+characterSize<=110){
-    makeBounceRight(200);
-  }*/
-  
   for(int i=0;i<50;i++){
-    
-    // character hits left bound of barrier
-    if (p1X+characterSize > barrier[i].left && p1X+characterSize < barrier[i].left+20 &&
-        p1Y+characterSize*2 >= barrier[i].top+5 && p1Y+characterSize/3 <= barrier[i].bottom-5){
-      makeBounceRight(barrier[i].left);
-    }
-    
-    // character hits right bound of barrier
-    if (p1X < barrier[i].right && p1X > barrier[i].right-20 &&
-        p1Y+characterSize*2 >= barrier[i].top+5 && p1Y+characterSize/3 <= barrier[i].bottom-5){
-      makeBounceLeft(barrier[i].right);
-    }
-    
-    // character hits floor of Barrier
-    if (p1Y+characterSize*2 >= barrier[i].top && p1Y+characterSize*2 < barrier[i].top+20 &&
-        p1X+characterSize >=barrier[i].left && p1X <=barrier[i].right) { 
-      makeBounceBottom(barrier[i].top);
-      switchJump = true;
-    }
-    
-    // character hits ceiling
-    if (p1Y <= barrier[i].bottom && p1Y >= barrier[i].bottom-20 &&
-        p1X+characterSize >= barrier[i].left && p1X <= barrier[i].right) {
-      makeBounceTop(barrier[i].bottom);
-    }
-    
+    // left bullet hits the bound of barrier
     for(int j=0;j<bulletLeftMount;j++){
-      if(bulletLeft[j].x <= barrier[i].right &&
+      if(bulletLeft[j].x <= barrier[i].right && bulletLeft[j].x >= barrier[i].left &&
           bulletLeft[j].y >= barrier[i].top && bulletLeft[j].y <= barrier[i].bottom){
        bulletLeft[j].visible=false;
       }
     }
+    
+    // right bullet hits the bound of barrier
     for(int j=0;j<bulletRightMount;j++){
-       if(bulletRight[j].x >= barrier[i].left &&
+     if(bulletRight[j].x >= barrier[i].left && bulletRight[j].x <= barrier[i].right &&
           bulletRight[j].y >= barrier[i].top && bulletRight[j].y <= barrier[i].bottom){
        bulletRight[j].visible=false;
       }
     }
-
+    
+    
+    for(int j=0;j<playersMount;j++){
+      // character hits left bound of barrier
+      if (players[j].x+players[j].size > barrier[i].left && players[j].x+players[j].size < barrier[i].left+20 &&
+          players[j].y+players[j].size*2 >= barrier[i].top+5 && players[j].y+players[j].size/3 <= barrier[i].bottom-5){
+        makeBounceRight(barrier[i].left, j);
+      }
+      
+      // character hits right bound of barrier
+      if (players[j].x < barrier[i].right && players[j].x > barrier[i].right-20 &&
+          players[j].y + players[j].size*2 >= barrier[i].top+5 && players[j].y + players[j].size/3 <= barrier[i].bottom-5){
+        makeBounceLeft(barrier[i].right, j);
+      }
+      
+      // character hits floor of Barrier
+      if (players[j].y + players[j].size*2 >= barrier[i].top && players[j].y + players[j].size*2 < barrier[i].top+20 &&
+          players[j].x + players[j].size >=barrier[i].left && players[j].x <=barrier[i].right) { 
+        makeBounceBottom(barrier[i].top, j);
+      }
+      
+      // character hits ceiling
+      if (players[j].y <= barrier[i].bottom && players[j].y >= barrier[i].bottom-20 &&
+          players[j].x + players[j].size >= barrier[i].left && players[j].x <= barrier[i].right) {
+        makeBounceTop(barrier[i].bottom, j);
+      }
+    }
 
   }
   

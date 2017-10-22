@@ -11,9 +11,9 @@ class Bullet{
     y=0;     
   }
 
-  void setPosition(){
-    x=p1X;
-    y=p1Y+characterSize*2/3;
+  void setPosition(int playerIndex){
+    x=players[playerIndex].x;
+    y=players[playerIndex].y + players[playerIndex].size*2/3;
   }
   
   void show(){
