@@ -1,6 +1,6 @@
 int bulletLeftCounter = 0;
 int bulletRightCounter = 0;
-
+int barrierCounter = 0;
 
 class Bullet{
   Bullet(boolean L){
@@ -12,12 +12,19 @@ class Bullet{
   }
 
   void setPosition(int playerIndex){
-    x=players[playerIndex].x;
-    y=players[playerIndex].y + players[playerIndex].size*2/3;
+    if(players[playerIndex].left){
+      x=players[playerIndex].x-players[playerIndex].size*2;
+      y=players[playerIndex].y + players[playerIndex].size;
+    }
+    else{
+      x=players[playerIndex].x+players[playerIndex].size*2;
+      y=players[playerIndex].y + players[playerIndex].size;
+    }
+
   }
   
   void show(){
-    line(x,y,x+20,y);
+    line(x,y,x+10,y);
   }
   
   void move(){
@@ -31,10 +38,11 @@ class Bullet{
   boolean visible=false;
 }
 
-class ObjectManager{
-  void generateBar(){
-    rect(100,400,100,100);
-    barrier[0].setPosition(100,400,100,100);
+class BarriersManager{
+  void generateBar(int barrierIndex, float x, float y, float wei, float hei){
+    fill(0,255,0);
+    rect(x,y,wei,hei);
+    barrier[barrierIndex].setPosition(x,y,wei,hei);
   }
 }
 

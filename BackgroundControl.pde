@@ -1,20 +1,57 @@
 float airfriction = 0.01;
 float gravity=1;
-int gameMode;
+int gameMode=0;
 
 void gameScreenControl(){
   //0 : Main menu
   if(gameMode==0){
-    
+    background(200);
+    if(mousePressed) gameMode=1;
   }
   
+  //1 : Gaming
   if(gameMode==1){
     
-  }
-  
-  if(gameMode==2){
+    background(200);
+    rect(500,540,20,40);
+    barriersManager.generateBar(0,100,400,100,100);
+    barriersManager.generateBar(1,0,0,800,20);
+    barriersManager.generateBar(2,0,0,20,600);
+    barriersManager.generateBar(3,780,0,20,600);
+    barriersManager.generateBar(4,0,580,800,20);
+    players[0].drawPlayer();
+    players[1].drawPlayer();
+    applyGravity();
+    keepInScreen();
+    bumpIntoBarrier();
+    keyControl();
+    
+    for(int i=0;i<bulletLeftMount;i++){
+      if(bulletLeft[i].visible){
+        bulletLeft[i].show();
+        bulletLeft[i].move();
+      }
+    }
+    
+    for(int i=0;i<bulletRightMount;i++){
+      if(bulletRight[i].visible){
+        bulletRight[i].show();
+        bulletRight[i].move();
+      }
+    }
+    
+    for(int i=0;i<playersMount;i++){
+      players[i].switchJump = false;
+    }
     
   }
+  
+  //2 game over
+  if(gameMode==2){
+    background(200);
+    if(mousePressed) gameMode = 0;
+  }
+  
   if(gameMode==3){
     
   }
@@ -56,9 +93,10 @@ void keepInScreen() {
 
 void bumpIntoBarrier(){
   for(int i=0;i<50;i++){
+    
     // left bullet hits the bound of barrier
     for(int j=0;j<bulletLeftMount;j++){
-      if(bulletLeft[j].x <= barrier[i].right && bulletLeft[j].x >= barrier[i].left &&
+      if(bulletLeft[j].x >= barrier[i].left &&  bulletLeft[j].x <= barrier[i].right &&
           bulletLeft[j].y >= barrier[i].top && bulletLeft[j].y <= barrier[i].bottom){
        bulletLeft[j].visible=false;
       }
@@ -71,6 +109,8 @@ void bumpIntoBarrier(){
        bulletRight[j].visible=false;
       }
     }
+    
+
     
     
     for(int j=0;j<playersMount;j++){

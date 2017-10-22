@@ -109,5 +109,4 @@ void fire(int playerIndex){
     bulletRight[bulletRightCounter].visible=true;
   }
   
-  
 }
