@@ -1,6 +1,7 @@
 float generalSpeedVert=0;
 float collisionSize=20.0;
-PImage playerImg ;
+
+
 
 class Player{
   Player(){
@@ -10,28 +11,45 @@ class Player{
     left = false;
     switchJump = false;
     hp = 100;
-    damage = 10;
   }
   
   void drawPlayer(){
-    fill(0);
-    playerImg = loadImage("2-1.png");
+    
+    //while jumping
+    if(isJumping){
+      if(left){
+        image(playerJumpingL, x, y, 50, 50);
+      } 
+      else{
+        image(playerJumpingR, x, y, 50, 50);
+      } 
+    }
+    
+    //while walking
+    else if(isMoving && !isJumping){
+      if(left) playerMovingL.display(x, y, 50, 50);
+      else playerMovingR.display(x, y, 50, 50);
+    }
+
+    //stand
+    else{
+      if(left) image(playerStandingL, x, y, 50, 50);
+      else image(playerStandingR, x, y, 50, 50);
+    }
     
     //draw the hp bar
     fill(255);
     rect(x,y-8,40,4);
     fill(0,255,0);
     rect(x,y-8,40*hp/100,4);
-    
-    image(playerImg, x, y, 50, 50);
   }
   
-  void setDamage(int damageP){
-    damage = damageP;
+  void setWeapon(int number){
+    weaponNumber = number;
   }
   
-  int hp,damage;
+  int hp, weaponNumber;
   float speedVert, x, y, size;
-  boolean left, switchJump;
+  boolean left, switchJump, isMoving, isJumping;
   
 }

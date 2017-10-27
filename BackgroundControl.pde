@@ -27,21 +27,21 @@ void gameScreenControl(){
     playerHitsBarrier();
     keyControl();
     
-    for(int i=0;i<bulletLeftMount;i++){
+    for(int i=0;i<bulletLeftAmount;i++){
       if(bulletsLeft[i].visible){
         bulletsLeft[i].show();
         bulletsLeft[i].move();
       }
     }
     
-    for(int i=0;i<bulletRightMount;i++){
+    for(int i=0;i<bulletRightAmount;i++){
       if(bulletsRight[i].visible){
         bulletsRight[i].show();
         bulletsRight[i].move();
       }
     }
     
-    for(int i=0;i<playersMount;i++){
+    for(int i=0;i<playersAmount;i++){
       players[i].switchJump = false;
     }
     
@@ -77,7 +77,7 @@ void applyGravity() {
 }
 
 void keepInScreen() {
-  for(int i=0;i<playersMount;i++){
+  for(int i=0;i<playersAmount;i++){
     // player hits floor
     if (players[i].y+(players[i].size*2) > height) { 
       makeBounceBottom(height, i);
@@ -104,7 +104,7 @@ void keepInScreen() {
 void playerHitsBarrier(){
   for(int i=0;i<50;i++){
 
-    for(int j=0;j<playersMount;j++){
+    for(int j=0;j<playersAmount;j++){
       // player hits left bound of barrier
       if (players[j].x+players[j].size > barriers[i].left && players[j].x+players[j].size < barriers[i].left+20 &&
           players[j].y+players[j].size*2 >= barriers[i].top+5 && players[j].y+players[j].size/3 <= barriers[i].bottom-5){
@@ -119,13 +119,13 @@ void playerHitsBarrier(){
       
       // player hits floor of Barrier
       if (players[j].y + players[j].size*2 >= barriers[i].top && players[j].y + players[j].size*2 <= barriers[i].top+20 &&
-          players[j].x + players[j].size >= barriers[i].left && players[j].x <=barriers[i].right) { 
+          players[j].x + players[j].size >= barriers[i].left && players[j].x < barriers[i].right) { 
         makeBounceBottom(barriers[i].top, j);
       }
       
       // player hits ceiling of Barrier
       if (players[j].y <= barriers[i].bottom && players[j].y >= barriers[i].bottom-20 &&
-          players[j].x + players[j].size >= barriers[i].left && players[j].x <= barriers[i].right) {
+          players[j].x + players[j].size >= barriers[i].left && players[j].x < barriers[i].right) {
         makeBounceTop(barriers[i].bottom, j);
       }
     }
@@ -138,6 +138,7 @@ void makeBounceBottom(float surface, int playerIndex) {
   players[playerIndex].y = surface-(players[playerIndex].size*2);
   players[playerIndex].speedVert = 0;
   players[playerIndex].switchJump = true;
+  players[playerIndex].isJumping = false;
 }
 
 void makeBounceTop(float surface, int playerIndex) {
@@ -155,4 +156,20 @@ void makeBounceRight(float surface, int playerIndex){
   players[playerIndex].left = true;
   players[playerIndex].x = surface-players[playerIndex].size;
   players[playerIndex].speedVert = 0;
+}
+
+
+
+boolean collision(float x1, float y1, float wei1, float hei1, float x2, float y2, float wei2, float hei2){
+  float nMaxLeft = x1 >= x2 ? x1 : x2;  
+  float nMaxTop = y1 >= y2 ? y1 : y2;  
+  float nMinRight = (x1 + wei1) <= (x2 + wei2) ? (x1 + wei1) : (x2 + wei2);  
+  float nMinBottom = (y1 + hei1) <= (y2 + hei2) ? (y1 + hei1) : (y2 + hei2);
+  
+  if (nMaxLeft > nMinRight || nMaxTop > nMinBottom){  
+    return false;  
+  }  
+  else{  
+    return true;  
+  }  
 }

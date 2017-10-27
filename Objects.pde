@@ -24,7 +24,7 @@ class Bullet{
       x=players[playerIndex].x+players[playerIndex].size*2;
       y=players[playerIndex].y + players[playerIndex].size;
     }
-    damage = players[playerIndex].damage;
+    damage = weapons[players[playerIndex].weaponNumber].damage;
   }
   
   void show(){
@@ -38,7 +38,7 @@ class Bullet{
     }
     
     //check hits the player
-    for(int i=0;i<playersMount;i++){
+    for(int i=0;i<playersAmount;i++){
       if(x+bulletSize/2.0 >= players[i].x &&  x+bulletSize/2.0 <= players[i].x+collisionSize &&
          y >= players[i].y && y <= players[i].y+collisionSize*2.0){
         players[i].hp -= damage;
@@ -54,17 +54,17 @@ class Bullet{
       
       if(x >= barriers[i].left &&  x <= barriers[i].right &&
           y >= barriers[i].top && y <= barriers[i].bottom){
-       visible=false;
+       visible = false;
       }
        if(x >= barriers[i].left && x <= barriers[i].right &&
           y >= barriers[i].top && y <= barriers[i].bottom){
-       visible=false;
+       visible = false;
       }
       
     }
   }
 
-  float x,y,speed,damage;
+  float x,y,speed,damage,gun;
   boolean visible = false, switchHurt = true;
 }
 
@@ -82,8 +82,9 @@ class Barriers{
   float top,bottom,left,right;
 }
 
-class Gun{
-  Gun(){
+class Weapon{
+  Weapon(){
+    img = loadImage(null);
     damage = 0;
     bullets = 0;
     coolDown = 0.0;
@@ -96,20 +97,55 @@ class Gun{
     if(currentTime - startTime >= coolDown) switchFire = true;
   }
   
-  void drawGun(){
-    
+  void drawWeapon(float x, float y){
+    image(img,x,y);
+    for(int i=0;i<playersAmount;i++){
+      if (collision(players[i].x, players[i].y, players[i].size, players[i].size*2, x, y, size, size)){
+        isItem = false;
+        players[i].setWeapon(number);
+      }
+    }
   }
   
-  int damage,bullets;
+  int damage, bullets, number;
   float coolDown;
+  float x ,y, size = 20.0;
   float startTime,currentTime;
-  boolean switchFire = true;
+  boolean switchFire = true, isItem = false;
+  PImage img;
 }
 
-class SmallGun extends Gun{
+class SmallGun extends Weapon{
   SmallGun(){
     damage = 10;
     bullets = 7;
     coolDown = 0.5;
+  }
+}
+
+
+class Animation {
+  PImage[] images;
+  int imageCount;
+  int frame;
+  
+  Animation(String imagePrefix, int count) {
+    imageCount = count;
+    images = new PImage[imageCount];
+
+    for (int i = 0; i < imageCount; i++) {
+      // Use nf() to number format 'i' into four digits
+      String filename = imagePrefix + nf(i, 4) + ".png";
+      images[i] = loadImage(filename);
+    }
+  }
+
+  void display(float xpos, float ypos, float wei, float hei) {
+    frame = (frame+1) % imageCount;
+    image(images[frame], xpos, ypos, wei, hei);
+  }
+  
+  int getWidth() {
+    return images[0].width;
   }
 }

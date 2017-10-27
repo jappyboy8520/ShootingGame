@@ -3,8 +3,6 @@ float jumpSpeed = 6.0;
 boolean[] isLeft = new boolean[4],isRight = new boolean[4],
           isUp = new boolean[4], isDown = new boolean[4], isFire = new boolean[4];
 
-SmallGun ss = new SmallGun();
-
 void keyPressed() {
   playerButtonControl(keyCode, true);
 }
@@ -61,30 +59,32 @@ boolean playerButtonControl(int keyP, boolean switchP) {
 
 void keyControl(){
   
-  for(int i=0;i<playersMount;i++){
+  for(int i=0;i<playersAmount;i++){
     if (isLeft[i]){
       players[i].left = true;
       players[i].x -= generalMoveSpeed;
+      players[i].isMoving = true;
     }
     
     if (isRight[i]){
       players[i].left = false;
       players[i].x += generalMoveSpeed;
+      players[i].isMoving = true;
     }
     
     if (isDown[i]) ;
     
     if (isUp[i]){
-      
-      if(players[i].switchJump) jump(i);
-      
+      if(players[i].switchJump){
+        jump(i);
+      } 
     } 
     
     if (isFire[i]){
-      if(ss.switchFire){
+      if(weapons[players[i].weaponNumber].switchFire){
         fire(i);
       }
-      ss.coolDown();
+      weapons[players[i].weaponNumber].coolDown();
     }
   }
   
@@ -92,6 +92,7 @@ void keyControl(){
 
 
 void jump(int playerIndex){
+  players[playerIndex].isJumping = true;
   players[playerIndex].speedVert = -jumpSpeed;
 }
 
@@ -101,9 +102,9 @@ void fire(int playerIndex){
   if(players[playerIndex].left) bulletLeftCounter++;
   else bulletRightCounter++;
   
-  //over the max bulletMount back to 0
-  if(bulletLeftCounter>=bulletLeftMount) bulletLeftCounter=0;
-  if(bulletRightCounter>=bulletRightMount) bulletRightCounter=0;
+  //over the max bulletAmount back to 0
+  if(bulletLeftCounter>=bulletLeftAmount) bulletLeftCounter=0;
+  if(bulletRightCounter>=bulletRightAmount) bulletRightCounter=0;
   
   //set the left bullet
   if(players[playerIndex].left){
