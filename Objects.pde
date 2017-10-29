@@ -2,7 +2,8 @@ int bulletLeftCounter = 0;
 int bulletRightCounter = 0;
 int barrierCounter = 0;
 float bulletSize = 10.0;
-float bulletSpeed = 20.0;
+float bulletSpeed = 30.0;
+float weaponItemSize = 20.0;
 
 class Bullet{
   Bullet(boolean L){ 
@@ -17,12 +18,12 @@ class Bullet{
     // after set the position the bullet can hurt
     switchHurt = true;
     if(players[playerIndex].left){
-      x=players[playerIndex].x-players[playerIndex].size*2;
-      y=players[playerIndex].y + players[playerIndex].size;
+      x = players[playerIndex].x - players[playerIndex].wei;
+      y = players[playerIndex].y + players[playerIndex].wei;
     }
     else{
-      x=players[playerIndex].x+players[playerIndex].size*2;
-      y=players[playerIndex].y + players[playerIndex].size;
+      x = players[playerIndex].x + players[playerIndex].wei;
+      y = players[playerIndex].y + players[playerIndex].wei;
     }
     damage = weapons[players[playerIndex].weaponNumber].damage;
   }
@@ -39,24 +40,21 @@ class Bullet{
     
     //check hits the player
     for(int i=0;i<playersAmount;i++){
-      if(x+bulletSize/2.0 >= players[i].x &&  x+bulletSize/2.0 <= players[i].x+collisionSize &&
-         y >= players[i].y && y <= players[i].y+collisionSize*2.0){
-        players[i].hp -= damage;
-        //after damage the player the bullet become invalid
-        switchHurt = false;
-        if(players[i].hp <= 0) gameOver();
-      }
-      
+      /*if(x+bulletSize/2.0 >= players[i].x &&  x+bulletSize/2.0 <= players[i].x+collisionSize &&
+         y >= players[i].y && y <= players[i].y+collisionSize*2.0)*/
+       if(switchHurt){
+         if(collision(x, y, bulletSize, 0.1, players[i].x, players[i].y, players[i].wei, players[i].hei)){
+           players[i].hp -= damage;
+           //after damage the player the bullet become invalid
+           switchHurt = false;
+         }
+       }
     }
     
     //check hits the barrier
     for(int i=0;i<50;i++){
       
       if(x >= barriers[i].left &&  x <= barriers[i].right &&
-          y >= barriers[i].top && y <= barriers[i].bottom){
-       visible = false;
-      }
-       if(x >= barriers[i].left && x <= barriers[i].right &&
           y >= barriers[i].top && y <= barriers[i].bottom){
        visible = false;
       }
@@ -68,11 +66,18 @@ class Bullet{
   boolean visible = false, switchHurt = true;
 }
 
+
 class Barriers{
   void drawBarrier(float x, float y, float wei, float hei){
     //draw
     fill(0,255,0);
     rect(x,y,wei,hei);
+    
+    this.x=x;
+    this.y=y;
+    this.wei=wei;
+    this.hei=hei;
+    
     //set the edges of Barrier
     top = y;
     bottom = y+hei;
@@ -80,13 +85,16 @@ class Barriers{
     right = x+wei;
   }
   float top,bottom,left,right;
+  float x,y,wei,hei;
 }
+
 
 class Weapon{
   Weapon(){
-    img = loadImage(null);
+    //img = loadImage(null);
     damage = 0;
-    bullets = 0;
+    maxBullets = bullets = 0;
+    ;
     coolDown = 0.0;
   }
   
@@ -97,28 +105,64 @@ class Weapon{
     if(currentTime - startTime >= coolDown) switchFire = true;
   }
   
-  void drawWeapon(float x, float y){
-    image(img,x,y);
-    for(int i=0;i<playersAmount;i++){
-      if (collision(players[i].x, players[i].y, players[i].size, players[i].size*2, x, y, size, size)){
-        isItem = false;
-        players[i].setWeapon(number);
+  void showItem(float x, float y){
+    if(isItem){
+      //image(img,x,y);
+      rect(x,y,30,30);
+      for(int i=0;i<playersAmount;i++){
+        if (collision(players[i].x, players[i].y, players[i].wei, players[i].hei, x, y, size, size)){
+          isItem = false;
+          players[i].setWeapon(number);
+        }
       }
     }
   }
   
-  int damage, bullets, number;
+  void fire(int playerIndex){
+    //check if it can shoot
+    if(switchFire && bullets>0){
+      
+      //control the global bulletIndex 
+      if(players[playerIndex].left) bulletLeftCounter++;
+      else bulletRightCounter++;
+      
+      //over the max bulletAmount back to 0
+      if(bulletLeftCounter>=bulletLeftAmount) bulletLeftCounter=0;
+      if(bulletRightCounter>=bulletRightAmount) bulletRightCounter=0;
+      
+      //set the left bullet
+      if(players[playerIndex].left){
+        bulletsLeft[bulletLeftCounter].setPosition(playerIndex);
+        bulletsLeft[bulletLeftCounter].visible=true;
+      }
+      
+      //set the right bullet
+      else{
+        bulletsRight[bulletRightCounter].setPosition(playerIndex);
+        bulletsRight[bulletRightCounter].visible=true;
+      }
+      
+      //substract the bullet from the gun
+      bullets--;
+
+    }
+    //cooldown for shooting
+    coolDown();
+  }
+    
+  int damage, bullets, number, maxBullets;
   float coolDown;
-  float x ,y, size = 20.0;
+  float x ,y, size = weaponItemSize;
   float startTime,currentTime;
-  boolean switchFire = true, isItem = false;
+  boolean switchFire = true, isItem = true;
   PImage img;
 }
+
 
 class SmallGun extends Weapon{
   SmallGun(){
     damage = 10;
-    bullets = 7;
+    maxBullets = bullets = 7;
     coolDown = 0.5;
   }
 }

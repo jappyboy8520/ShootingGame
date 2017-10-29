@@ -1,5 +1,4 @@
 float generalMoveSpeed = 3.0;
-float jumpSpeed = 6.0;
 boolean[] isLeft = new boolean[4],isRight = new boolean[4],
           isUp = new boolean[4], isDown = new boolean[4], isFire = new boolean[4];
 
@@ -60,62 +59,67 @@ boolean playerButtonControl(int keyP, boolean switchP) {
 void keyControl(){
   
   for(int i=0;i<playersAmount;i++){
+    
     if (isLeft[i]){
-      players[i].left = true;
-      players[i].x -= generalMoveSpeed;
-      players[i].isMoving = true;
+      players[i].moveLeft();
     }
     
     if (isRight[i]){
-      players[i].left = false;
-      players[i].x += generalMoveSpeed;
-      players[i].isMoving = true;
+      players[i].moveRight();
     }
     
     if (isDown[i]) ;
     
     if (isUp[i]){
-      if(players[i].switchJump){
-        jump(i);
-      } 
+      players[i].jump();
     } 
     
     if (isFire[i]){
-      if(weapons[players[i].weaponNumber].switchFire){
-        fire(i);
+      //check if the player take the weapon
+      if(players[i].weaponNumber != -1){
+        weapons[players[i].weaponNumber].fire(i);
       }
-      weapons[players[i].weaponNumber].coolDown();
     }
   }
   
 }
 
-
-void jump(int playerIndex){
+/*void jump(int playerIndex){
   players[playerIndex].isJumping = true;
   players[playerIndex].speedVert = -jumpSpeed;
-}
+}*/
 
 //set the position of the bullet for firing
-void fire(int playerIndex){
-  //control the global bulletIndex 
-  if(players[playerIndex].left) bulletLeftCounter++;
-  else bulletRightCounter++;
-  
-  //over the max bulletAmount back to 0
-  if(bulletLeftCounter>=bulletLeftAmount) bulletLeftCounter=0;
-  if(bulletRightCounter>=bulletRightAmount) bulletRightCounter=0;
-  
-  //set the left bullet
-  if(players[playerIndex].left){
-    bulletsLeft[bulletLeftCounter].setPosition(playerIndex);
-    bulletsLeft[bulletLeftCounter].visible=true;
+/*void fire(int playerIndex){
+  //weaponNumber -1 equal to non weapon
+  if(players[playerIndex].weaponNumber != -1){
+    //check if it can shoot
+    if(weapons[players[playerIndex].weaponNumber].switchFire && weapons[players[playerIndex].weaponNumber].bullets>0){
+      //control the global bulletIndex 
+      if(players[playerIndex].left) bulletLeftCounter++;
+      else bulletRightCounter++;
+      
+      //over the max bulletAmount back to 0
+      if(bulletLeftCounter>=bulletLeftAmount) bulletLeftCounter=0;
+      if(bulletRightCounter>=bulletRightAmount) bulletRightCounter=0;
+      
+      //set the left bullet
+      if(players[playerIndex].left){
+        bulletsLeft[bulletLeftCounter].setPosition(playerIndex);
+        bulletsLeft[bulletLeftCounter].visible=true;
+      }
+      
+      //set the right bullet
+      else{
+        bulletsRight[bulletRightCounter].setPosition(playerIndex);
+        bulletsRight[bulletRightCounter].visible=true;
+      }
+      
+      //substract the bullet from the gun
+      weapons[players[playerIndex].weaponNumber].bullets--;
+
+    }
+    //cooldown for shooting
+    weapons[players[playerIndex].weaponNumber].coolDown();
   }
-  
-  //set the right bullet
-  else{
-    bulletsRight[bulletRightCounter].setPosition(playerIndex);
-    bulletsRight[bulletRightCounter].visible=true;
-  }
-  
-}
+}*/

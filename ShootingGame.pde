@@ -45,18 +45,14 @@ void setup(){
     weapons[i].number = i;
   }
   //images
-  playerJumpingL = loadImage("Jumping_L.png");
+  /*playerJumpingL = loadImage("Jumping_L.png");
   playerJumpingR = loadImage("Jumping_R.png");
-  playerStandingL = loadImage("Standing_L.png");
-  playerStandingR = loadImage("Standing_R.png");
   playerMovingL = new Animation("Moving_L_", 5);
-  playerMovingR = new Animation("Moving_R_", 5);
+  playerMovingR = new Animation("Moving_R_", 5);*/
+  playerStandingL = loadImage("playerStandingL.png");
+  playerStandingR = loadImage("playerStandingR.png");
   
   frameRate(120);
- 
-  //test
-  players[0].weaponNumber = 0;
-  players[1].weaponNumber = 1;
 }
 
 void draw(){
