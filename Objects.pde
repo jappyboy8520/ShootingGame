@@ -95,14 +95,14 @@ class Weapon{
     damage = 0;
     maxBullets = bullets = 0;
     ;
-    coolDown = 0.0;
+    coolDownTime = 0.0;
   }
   
   void coolDown(){
     currentTime = millis()/1000.0;
     if(switchFire) startTime = currentTime;
     switchFire = false;
-    if(currentTime - startTime >= coolDown) switchFire = true;
+    if(currentTime - startTime >= coolDownTime) switchFire = true;
   }
   
   void showItem(float x, float y){
@@ -151,7 +151,7 @@ class Weapon{
   }
     
   int damage, bullets, number, maxBullets;
-  float coolDown;
+  float coolDownTime;
   float x ,y, size = weaponItemSize;
   float startTime,currentTime;
   boolean switchFire = true, isItem = true;
@@ -163,17 +163,18 @@ class SmallGun extends Weapon{
   SmallGun(){
     damage = 10;
     maxBullets = bullets = 7;
-    coolDown = 0.5;
+    coolDownTime = 0.5;
   }
 }
 
 
+// Class for animating a sequence of pictures
 class Animation {
   PImage[] images;
   int imageCount;
   int frame;
   
-  Animation(String imagePrefix, int count) {
+  Animation(String imagePrefix, int count, float animationFrameRate) {
     imageCount = count;
     images = new PImage[imageCount];
 
@@ -182,14 +183,30 @@ class Animation {
       String filename = imagePrefix + nf(i, 4) + ".png";
       images[i] = loadImage(filename);
     }
+    
+    coolDownTime = animationFrameRate;
   }
 
-  void display(float xpos, float ypos, float wei, float hei) {
-    frame = (frame+1) % imageCount;
-    image(images[frame], xpos, ypos, wei, hei);
+  void display(float xpos, float ypos) {
+    if(switchNextFrame){
+      frame = (frame+1) % imageCount;
+    }
+    image(images[frame], xpos, ypos);
+    coolDown();
+  }
+  
+  void coolDown(){
+    currentTime = millis()/1000.0;
+    if(switchNextFrame) startTime = currentTime;
+    switchNextFrame = false;
+    
+    if(currentTime - startTime >= coolDownTime) switchNextFrame = true;
   }
   
   int getWidth() {
     return images[0].width;
   }
+  
+  float currentTime, startTime, coolDownTime;
+  boolean switchNextFrame = true;
 }
