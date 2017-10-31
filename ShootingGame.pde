@@ -17,10 +17,42 @@ PImage playerJumpingL, playerJumpingR;
 PImage playerStandingL, playerStandingR;
 Animation playerMovingL, playerMovingR;
 
+PImage akJumpingL, akJumpingR;
+PImage akStandingL, akStandingR;
+Animation akMovingL, akMovingR;
+
+PImage pistolJumpingL, pistolJumpingR;
+PImage pistolStandingL, pistolStandingR;
+Animation pistolMovingL, pistolMovingR;
+Animation pistolFiringL, pistolFiringR;
+
+PImage normalJumpingL, normalJumpingR;
+PImage normalStandingL, normalStandingR;
+Animation normalMovingL, normalMovingR;
+
 void setup(){
   size(800,600); 
   background(200);
   smooth();
+  
+  //images
+  
+  normalJumpingL = loadImage("Images/normal/walk/L-0000.png");
+  normalJumpingR = loadImage("Images/normal/walk/R-0000.png");
+  normalMovingL = new Animation("Images/normal/walk/L-", 4, 0.08);
+  normalMovingR = new Animation("Images/normal/walk/R-", 4, 0.08);
+  normalStandingL = loadImage("Images/normal/walk/L-0002.png");
+  normalStandingR = loadImage("Images/normal/walk/R-0002.png");
+  
+  
+  pistolJumpingL = loadImage("Images/pistol/walk/L-0000.png");
+  pistolJumpingR = loadImage("Images/pistol/walk/R-0000.png");
+  pistolMovingL = new Animation("Images/pistol/walk/L-", 4, 0.08);
+  pistolMovingR = new Animation("Images/pistol/walk/R-", 4, 0.08);
+  pistolStandingL = loadImage("Images/pistol/walk/L-0002.png");
+  pistolStandingR = loadImage("Images/pistol/walk/R-0002.png");
+  pistolFiringL = new Animation("Images/pistol/shot/L-", 2, 2);
+  pistolFiringR = new Animation("Images/pistol/shot/R-", 2, 2);
  
   int i;
   //left bullet
@@ -38,19 +70,19 @@ void setup(){
   //players
   for(i=0;i<playersAmount;i++){
     players[i] = new Player();
+    
+    players[i].jumpingL = normalJumpingL;
+    players[i].jumpingR = normalJumpingR;
+    players[i].movingL = normalMovingL;
+    players[i].movingR = normalMovingR;
+    players[i].standingL = normalStandingL;
+    players[i].standingR = normalStandingR;
   }
   //small guns
   for(i=0;i<smallGunAmount;i++){
     weapons[i] = new SmallGun();
     weapons[i].number = i;
   }
-  //images
-  /*playerJumpingL = loadImage("Jumping_L.png");
-  playerJumpingR = loadImage("Jumping_R.png");
-  playerMovingL = new Animation("Moving_L_", 5);
-  playerMovingR = new Animation("Moving_R_", 5);*/
-  playerStandingL = loadImage("playerStandingL.png");
-  playerStandingR = loadImage("playerStandingR.png");
   
   frameRate(120);
 }

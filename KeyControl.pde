@@ -23,10 +23,12 @@ boolean playerButtonControl(int keyP, boolean switchP) {
  
   case 'A':
   case 'a':
+    if(!switchP) players[0].isMoving = false;
     return isLeft[0] = switchP;
       
   case 'D':
   case 'd':
+    if(!switchP) players[0].isMoving = false;
     return isRight[0] = switchP;
     
   case ' ':
@@ -42,9 +44,11 @@ boolean playerButtonControl(int keyP, boolean switchP) {
     return isDown[1] = switchP;
  
   case LEFT:
+  if(!switchP) players[1].isMoving = false;
     return isLeft[1] = switchP;
       
   case RIGHT:
+  if(!switchP) players[1].isMoving = false;
     return isRight[1] = switchP;
     
   case '5':

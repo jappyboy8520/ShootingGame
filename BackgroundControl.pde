@@ -46,10 +46,6 @@ void gameScreenControl(){
       }
     }
     
-    for(int i=0;i<playersAmount;i++){
-      players[i].switchJump = false;
-    }
-    
     checkGameOver();
     
     //end Gaming

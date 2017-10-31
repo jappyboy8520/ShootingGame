@@ -17,7 +17,7 @@ class Bullet{
   void setPosition(int playerIndex){
     // after set the position the bullet can hurt
     switchHurt = true;
-    if(players[playerIndex].left){
+    if(players[playerIndex].isLeft){
       x = players[playerIndex].x - players[playerIndex].wei;
       y = players[playerIndex].y + players[playerIndex].wei;
     }
@@ -122,8 +122,10 @@ class Weapon{
     //check if it can shoot
     if(switchFire && bullets>0){
       
+      players[playerIndex].isFiring = true;
+      
       //control the global bulletIndex 
-      if(players[playerIndex].left) bulletLeftCounter++;
+      if(players[playerIndex].isLeft) bulletLeftCounter++;
       else bulletRightCounter++;
       
       //over the max bulletAmount back to 0
@@ -131,7 +133,7 @@ class Weapon{
       if(bulletRightCounter>=bulletRightAmount) bulletRightCounter=0;
       
       //set the left bullet
-      if(players[playerIndex].left){
+      if(players[playerIndex].isLeft){
         bulletsLeft[bulletLeftCounter].setPosition(playerIndex);
         bulletsLeft[bulletLeftCounter].visible=true;
       }
@@ -165,18 +167,37 @@ class SmallGun extends Weapon{
     maxBullets = bullets = 7;
     coolDownTime = 0.5;
   }
+  void showItem(float x, float y){
+    if(isItem){
+      //image(img,x,y);
+      rect(x,y,30,30);
+      for(int i=0;i<playersAmount;i++){
+        if (collision(players[i].x, players[i].y, players[i].wei, players[i].hei, x, y, size, size)){
+          isItem = false;
+          players[i].setWeapon(number);
+          
+          players[i].jumpingL = pistolJumpingL;
+          players[i].jumpingR = pistolJumpingR;
+          players[i].movingL = pistolMovingL;
+          players[i].movingR = pistolMovingR;
+          players[i].standingL = pistolStandingL;
+          players[i].standingR = pistolStandingR;
+          players[i].firingL = pistolFiringL;
+          players[i].firingR = pistolFiringR;
+        }
+      }
+    }
+  }
 }
 
 
 // Class for animating a sequence of pictures
 class Animation {
-  PImage[] images;
-  int imageCount;
-  int frame;
   
   Animation(String imagePrefix, int count, float animationFrameRate) {
     imageCount = count;
     images = new PImage[imageCount];
+    frame = -1;
 
     for (int i = 0; i < imageCount; i++) {
       // Use nf() to number format 'i' into four digits
@@ -186,12 +207,20 @@ class Animation {
     
     coolDownTime = animationFrameRate;
   }
-
+  
   void display(float xpos, float ypos) {
     if(switchNextFrame){
       frame = (frame+1) % imageCount;
     }
     image(images[frame], xpos, ypos);
+    coolDown();
+  }
+
+  void display(float xpos, float ypos, float wei, float hei) {
+    if(switchNextFrame){
+      frame = (frame+1) % imageCount;
+    }
+    image(images[frame], xpos, ypos, wei, hei);
     coolDown();
   }
   
@@ -207,6 +236,10 @@ class Animation {
     return images[0].width;
   }
   
+  PImage[] images;
+  int imageCount;
+  int frame;
   float currentTime, startTime, coolDownTime;
   boolean switchNextFrame = true;
+  
 }

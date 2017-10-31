@@ -12,39 +12,46 @@ class Player{
     x = y = 100.0;
     wei = collisionSize;
     hei = collisionSize*2;
-    left = false;
+    isLeft = false;
     switchJump = false;
+    isJumping = false;
+    isMoving = false;
+    isFiring = false;
     hp = 100;
     weaponNumber = -1;
   }
   
   void drawPlayer(){
-    /*
-    //while jumping
-    if(isJumping){
-      if(left){
-        image(playerJumpingL, x, y, 50, 50);
+    
+    if(isFiring){
+      if(isLeft){
+        if(firingL.frame == 0) isFiring = false;
+        firingL.display(x-offsetX, y-offsetY, 80, 50);
+        print(firingL.frame);
       } 
+      
       else{
-        image(playerJumpingR, x, y, 50, 50);
+        if(firingR.frame == 0) isFiring = false;
+        firingR.display(x-offsetX, y-offsetY, 80, 50);
       } 
+      
     }
     
-    //while walking
     else if(isMoving && !isJumping){
-      if(left) playerMovingL.display(x, y, 50, 50);
-      else playerMovingR.display(x, y, 50, 50);
+      if(isLeft) movingL.display(x-offsetX, y-offsetY, 80, 50);
+      else movingR.display(x-offsetX, y-offsetY, 80, 50);
     }
-
-    //stand
-    else{
-      if(left) image(playerStandingL, x, y, 50, 50);
-      else image(playerStandingR, x, y, 50, 50);
-    }
-    */
     
-    if(left) image(playerStandingL, x-offsetX, y-offsetY, 80, 50);
-    else image(playerStandingR, x-offsetX, y-offsetY, 80, 50);
+    else if (isJumping){
+      if(isLeft) image(jumpingL, x-offsetX, y-offsetY, 80, 50);
+      else image(jumpingR, x-offsetX, y-offsetY, 80, 50);
+    }
+    
+    else{
+      if(isLeft) image(standingL, x-offsetX, y-offsetY, 80, 50);
+      else image(standingR, x-offsetX, y-offsetY, 80, 50);
+    }
+    
     
     //draw the hp bar
     fill(255);
@@ -60,13 +67,13 @@ class Player{
   }
   
   void moveLeft(){
-    left = true;
+    isLeft = true;
     x -= generalMoveSpeed;
     isMoving = true;
   }
   
   void moveRight(){
-    left = false;
+    isLeft = false;
     x += generalMoveSpeed;
     isMoving = true;
   }
@@ -75,6 +82,7 @@ class Player{
     if(switchJump){
       isJumping = true;
       speedVert = -jumpSpeed;
+      switchJump = false;
     }
   }
   
@@ -84,6 +92,10 @@ class Player{
   
   int hp, weaponNumber;
   float speedVert, x, y, wei, hei;
-  boolean left, switchJump, isMoving, isJumping;
+  boolean switchJump, isLeft, isMoving, isJumping, isFiring;
   
+  PImage jumpingL, jumpingR;
+  PImage standingL, standingR;
+  Animation movingL, movingR;
+  Animation firingL, firingR;
 }
