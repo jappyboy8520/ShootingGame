@@ -232,6 +232,11 @@ class Animation {
     if(currentTime - startTime >= coolDownTime) switchNextFrame = true;
   }
   
+  void coolDownReset(){
+    switchNextFrame = true;
+    frame = -1;
+  }
+  
   int getWidth() {
     return images[0].width;
   }

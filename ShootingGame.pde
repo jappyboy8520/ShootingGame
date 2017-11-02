@@ -51,8 +51,8 @@ void setup(){
   pistolMovingR = new Animation("Images/pistol/walk/R-", 4, 0.08);
   pistolStandingL = loadImage("Images/pistol/walk/L-0002.png");
   pistolStandingR = loadImage("Images/pistol/walk/R-0002.png");
-  pistolFiringL = new Animation("Images/pistol/shot/L-", 2, 2);
-  pistolFiringR = new Animation("Images/pistol/shot/R-", 2, 2);
+  pistolFiringL = new Animation("Images/pistol/shot/L-", 4, 0.01);
+  pistolFiringR = new Animation("Images/pistol/shot/R-", 4, 0.01);
  
   int i;
   //left bullet

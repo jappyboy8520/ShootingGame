@@ -25,14 +25,25 @@ class Player{
     
     if(isFiring){
       if(isLeft){
-        if(firingL.frame == 0) isFiring = false;
+        
         firingL.display(x-offsetX, y-offsetY, 80, 50);
-        print(firingL.frame);
+        
+        // only show the animation once
+        if(firingL.frame == firingL.imageCount-1){
+          firingL.coolDownReset();
+          isFiring = false;
+        } 
       } 
       
       else{
-        if(firingR.frame == 0) isFiring = false;
+        
         firingR.display(x-offsetX, y-offsetY, 80, 50);
+        
+        // only show the animation once
+        if(firingR.frame == firingR.imageCount-1){
+          firingR.coolDownReset();
+          isFiring = false;
+        }
       } 
       
     }
