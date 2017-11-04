@@ -31,6 +31,7 @@ void gameScreenControl(){
     
     weapons[0].showItem(500,550);
     weapons[1].showItem(300,550);
+    weapons[5].showItem(600,550);
     
     for(int i=0;i<bulletLeftAmount;i++){
       if(bulletsLeft[i].visible){

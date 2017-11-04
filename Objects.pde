@@ -190,6 +190,37 @@ class SmallGun extends Weapon{
   }
 }
 
+class Ak extends Weapon{
+  Ak(){
+    damage = 8;
+    maxBullets = bullets = 70;
+    coolDownTime = 0.1;
+  }
+  
+  void showItem(float x, float y){
+    if(isItem){
+      //image(img,x,y);
+      rect(x,y,30,30);
+      for(int i=0;i<playersAmount;i++){
+        if (collision(players[i].x, players[i].y, players[i].wei, players[i].hei, x, y, size, size)){
+          isItem = false;
+          players[i].setWeapon(number);
+          
+          players[i].jumpingL = akJumpingL;
+          players[i].jumpingR = akJumpingR;
+          players[i].movingL = akMovingL;
+          players[i].movingR = akMovingR;
+          players[i].standingL = akStandingL;
+          players[i].standingR = akStandingR;
+          players[i].firingL = akFiringL;
+          players[i].firingR = akFiringR;
+        }
+      }
+    }
+  }
+  
+}
+
 
 // Class for animating a sequence of pictures
 class Animation {

@@ -8,10 +8,11 @@ Barriers[] barriers = new Barriers[barrierAmount];
 int playersAmount = 4;
 Player[] players = new Player[playersAmount];
 
-int weaponAmount = 4;
+int weaponAmount = 8;
 Weapon[] weapons = new Weapon[weaponAmount];
 
 int smallGunAmount = 4;
+int akAmount = 4;
 
 PImage playerJumpingL, playerJumpingR;
 PImage playerStandingL, playerStandingR;
@@ -20,6 +21,7 @@ Animation playerMovingL, playerMovingR;
 PImage akJumpingL, akJumpingR;
 PImage akStandingL, akStandingR;
 Animation akMovingL, akMovingR;
+Animation akFiringL, akFiringR;
 
 PImage pistolJumpingL, pistolJumpingR;
 PImage pistolStandingL, pistolStandingR;
@@ -51,8 +53,18 @@ void setup(){
   pistolMovingR = new Animation("Images/pistol/walk/R-", 4, 0.08);
   pistolStandingL = loadImage("Images/pistol/walk/L-0002.png");
   pistolStandingR = loadImage("Images/pistol/walk/R-0002.png");
-  pistolFiringL = new Animation("Images/pistol/shot/L-", 4, 0.01);
-  pistolFiringR = new Animation("Images/pistol/shot/R-", 4, 0.01);
+  pistolFiringL = new Animation("Images/pistol/shot/L-", 3, 0.01);
+  pistolFiringR = new Animation("Images/pistol/shot/R-", 3, 0.01);
+  
+  akJumpingL = loadImage("Images/ak/walk/L-0000.png");
+  akJumpingR = loadImage("Images/ak/walk/R-0000.png");
+  akMovingL = new Animation("Images/ak/walk/L-", 4, 0.08);
+  akMovingR = new Animation("Images/ak/walk/R-", 4, 0.08);
+  akStandingL = loadImage("Images/ak/walk/L-stand.png");
+  akStandingR = loadImage("Images/ak/walk/R-stand.png");
+  akFiringL = new Animation("Images/ak/shot/L-", 2, 0.01);
+  akFiringR = new Animation("Images/ak/shot/R-", 2, 0.01);
+  
  
   int i;
   //left bullet
@@ -82,6 +94,13 @@ void setup(){
   for(i=0;i<smallGunAmount;i++){
     weapons[i] = new SmallGun();
     weapons[i].number = i;
+    print("1");
+  }
+  // ak
+  for(i=smallGunAmount;i<akAmount+smallGunAmount;i++){
+    weapons[i] = new Ak();
+    weapons[i].number = i;
+    print("1");
   }
   
   frameRate(120);
