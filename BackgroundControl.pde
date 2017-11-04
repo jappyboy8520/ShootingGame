@@ -129,13 +129,13 @@ void playerHitsBarrier(){
       
       // player hits floor of Barrier
       if (players[j].y + players[j].hei >= barriers[i].top && players[j].y + players[j].hei <= barriers[i].top+collisionSize &&
-          players[j].x + players[j].wei >= barriers[i].left && players[j].x < barriers[i].right) { 
+          players[j].x + players[j].wei > barriers[i].left && players[j].x < barriers[i].right) { 
         makeBounceBottom(barriers[i].top, j);
       }
       
       // player hits ceiling of Barrier
       if (players[j].y <= barriers[i].bottom && players[j].y >= barriers[i].bottom-collisionSize &&
-          players[j].x + players[j].wei >= barriers[i].left && players[j].x < barriers[i].right) {
+          players[j].x + players[j].wei > barriers[i].left && players[j].x < barriers[i].right) {
         makeBounceTop(barriers[i].bottom, j);
       }
     }
