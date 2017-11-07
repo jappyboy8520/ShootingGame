@@ -1,4 +1,3 @@
-float generalMoveSpeed = 3.0;
 boolean[] isLeft = new boolean[4],isRight = new boolean[4],
           isUp = new boolean[4], isDown = new boolean[4], isFire = new boolean[4];
 

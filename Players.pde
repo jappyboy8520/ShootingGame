@@ -1,7 +1,7 @@
 float generalSpeedVert=0;
 float collisionSize=20.0;
 float jumpSpeed = 6.0;
-
+float generalMoveSpeed = 3.0;
 // Translate the players picture to the right sensor area
 float offsetX = 30.0, offsetY = 6.0;
 

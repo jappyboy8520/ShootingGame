@@ -3,7 +3,9 @@ int bulletRightCounter = 0;
 int barrierCounter = 0;
 float bulletSize = 10.0;
 float bulletSpeed = 30.0;
-float weaponItemSize = 20.0;
+
+float weaponItemWei = 63.0;
+float weaponItemHei =44.0;
 
 class Bullet{
   Bullet(boolean L){ 
@@ -18,11 +20,11 @@ class Bullet{
     // after set the position the bullet can hurt
     switchHurt = true;
     if(players[playerIndex].isLeft){
-      x = players[playerIndex].x - players[playerIndex].wei;
+      x = players[playerIndex].x;
       y = players[playerIndex].y + players[playerIndex].wei;
     }
     else{
-      x = players[playerIndex].x + players[playerIndex].wei;
+      x = players[playerIndex].x + players[playerIndex].wei - bulletSize;
       y = players[playerIndex].y + players[playerIndex].wei;
     }
     damage = weapons[players[playerIndex].weaponNumber].damage;
@@ -52,10 +54,11 @@ class Bullet{
     }
     
     //check hits the barrier
-    for(int i=0;i<50;i++){
+    for(int i=0;i<barriersIndex;i++){
       
-      if(x >= barriers[i].left &&  x <= barriers[i].right &&
-          y >= barriers[i].top && y <= barriers[i].bottom){
+      if(/*x >= barriers[i].left &&  x <= barriers[i].right &&
+          y >= barriers[i].top && y <= barriers[i].bottom*/
+          collision(x, y, bulletSize, 0.1, barriers[i].x, barriers[i].y, barriers[i].wei, barriers[i].hei)){
        visible = false;
       }
       
@@ -67,11 +70,16 @@ class Bullet{
 }
 
 
-class Barriers{
+class Barrier{
+  Barrier(PImage img){
+    this.img = img;
+  }
+  
   void drawBarrier(float x, float y, float wei, float hei){
     //draw
-    fill(0,255,0);
-    rect(x,y,wei,hei);
+    //fill(200,205,0);
+    //rect(x,y,wei,hei);
+    image(img,x,y,wei,hei);
     
     this.x=x;
     this.y=y;
@@ -84,6 +92,7 @@ class Barriers{
     left = x;
     right = x+wei;
   }
+  PImage img;
   float top,bottom,left,right;
   float x,y,wei,hei;
 }
@@ -91,11 +100,20 @@ class Barriers{
 
 class Weapon{
   Weapon(){
-    //img = loadImage(null);
+    img = loadImage("Images/gunbox/gunbox.png");
     damage = 0;
     maxBullets = bullets = 0;
-    ;
     coolDownTime = 0.0;
+    x = random(width);
+    y = random(height);
+    /*jumpingL;
+    jumpingR;
+    movingL;
+    movingR;
+    standingL;
+    standingR;
+    firingL;
+    firingR;*/
   }
   
   void coolDown(){
@@ -105,14 +123,27 @@ class Weapon{
     if(currentTime - startTime >= coolDownTime) switchFire = true;
   }
   
-  void showItem(float x, float y){
+  void showItem(){
     if(isItem){
-      //image(img,x,y);
-      rect(x,y,30,30);
+      image(img,x,y,wei,hei);
       for(int i=0;i<playersAmount;i++){
-        if (collision(players[i].x, players[i].y, players[i].wei, players[i].hei, x, y, size, size)){
+        if (collision(players[i].x, players[i].y, players[i].wei, players[i].hei, x, y, wei, hei)){
           isItem = false;
+          isGotten = true;
+          
+          // if player has a weapon , discard it
+          if(players[i].weaponNumber != -1) weapons[players[i].weaponNumber].isGotten = false;
+          
           players[i].setWeapon(number);
+          
+          players[i].jumpingL = jumpingL;
+          players[i].jumpingR = jumpingR;
+          players[i].movingL = movingL;
+          players[i].movingR = movingR;
+          players[i].standingL = standingL;
+          players[i].standingR = standingR;
+          players[i].firingL = firingL;
+          players[i].firingR = firingR;
         }
       }
     }
@@ -154,73 +185,78 @@ class Weapon{
     
   int damage, bullets, number, maxBullets;
   float coolDownTime;
-  float x ,y, size = weaponItemSize;
+  float speedVert=0;
+  float x ,y, wei = weaponItemWei, hei = weaponItemHei;
   float startTime,currentTime;
-  boolean switchFire = true, isItem = true;
+  boolean switchFire = true, isItem = false, isGotten = false;
   PImage img;
+  PImage jumpingL, jumpingR, standingL, standingR;
+  Animation movingL, movingR, firingL, firingR;
 }
 
 
 class SmallGun extends Weapon{
   SmallGun(){
-    damage = 10;
-    maxBullets = bullets = 7;
+    
+    damage = 8;
+    maxBullets = bullets = 12;
     coolDownTime = 0.5;
-  }
-  void showItem(float x, float y){
-    if(isItem){
-      //image(img,x,y);
-      rect(x,y,30,30);
-      for(int i=0;i<playersAmount;i++){
-        if (collision(players[i].x, players[i].y, players[i].wei, players[i].hei, x, y, size, size)){
-          isItem = false;
-          players[i].setWeapon(number);
-          
-          players[i].jumpingL = pistolJumpingL;
-          players[i].jumpingR = pistolJumpingR;
-          players[i].movingL = pistolMovingL;
-          players[i].movingR = pistolMovingR;
-          players[i].standingL = pistolStandingL;
-          players[i].standingR = pistolStandingR;
-          players[i].firingL = pistolFiringL;
-          players[i].firingR = pistolFiringR;
-        }
-      }
-    }
+    x = random(width);
+    y = random(height);
+    
+    img = pistolItem;
+    jumpingL = pistolJumpingL;
+    jumpingR = pistolJumpingR;
+    movingL = pistolMovingL;
+    movingR = pistolMovingR;
+    standingL = pistolStandingL;
+    standingR = pistolStandingR;
+    firingL = pistolFiringL;
+    firingR = pistolFiringR;
+    
   }
 }
 
 class Ak extends Weapon{
   Ak(){
-    damage = 8;
-    maxBullets = bullets = 70;
+    damage = 10;
+    maxBullets = bullets = 30;
     coolDownTime = 0.1;
+    x = random(width);
+    y = random(height);
+    
+    img = akItem;
+    jumpingL = akJumpingL;
+    jumpingR = akJumpingR;
+    movingL = akMovingL;
+    movingR = akMovingR;
+    standingL = akStandingL;
+    standingR = akStandingR;
+    firingL = akFiringL;
+    firingR = akFiringR;
   }
-  
-  void showItem(float x, float y){
-    if(isItem){
-      //image(img,x,y);
-      rect(x,y,30,30);
-      for(int i=0;i<playersAmount;i++){
-        if (collision(players[i].x, players[i].y, players[i].wei, players[i].hei, x, y, size, size)){
-          isItem = false;
-          players[i].setWeapon(number);
-          
-          players[i].jumpingL = akJumpingL;
-          players[i].jumpingR = akJumpingR;
-          players[i].movingL = akMovingL;
-          players[i].movingR = akMovingR;
-          players[i].standingL = akStandingL;
-          players[i].standingR = akStandingR;
-          players[i].firingL = akFiringL;
-          players[i].firingR = akFiringR;
-        }
-      }
-    }
+}
+
+class MachineGun extends Weapon{
+  MachineGun(){
+    damage = 7;
+    maxBullets = bullets = 75;
+    coolDownTime = 0.06;
+    x = random(width);
+    y = random(height);
+    
+    img = machineGunItem;
+    jumpingL = machineGunJumpingL;
+    jumpingR = machineGunJumpingR;
+    movingL = machineGunMovingL;
+    movingR = machineGunMovingR;
+    standingL = machineGunStandingL;
+    standingR = machineGunStandingR;
+    firingL = machineGunFiringL;
+    firingR = machineGunFiringR;
   }
   
 }
-
 
 // Class for animating a sequence of pictures
 class Animation {
