@@ -18,11 +18,11 @@ class Bullet{
     // after set the position the bullet can hurt
     switchHurt = true;
     if(players[playerIndex].isLeft){
-      x = players[playerIndex].x - players[playerIndex].wei;
+      x = players[playerIndex].x;
       y = players[playerIndex].y + players[playerIndex].wei;
     }
     else{
-      x = players[playerIndex].x + players[playerIndex].wei;
+      x = players[playerIndex].x + players[playerIndex].wei - bulletSize;
       y = players[playerIndex].y + players[playerIndex].wei;
     }
     damage = weapons[players[playerIndex].weaponNumber].damage;
@@ -54,8 +54,9 @@ class Bullet{
     //check hits the barrier
     for(int i=0;i<50;i++){
       
-      if(x >= barriers[i].left &&  x <= barriers[i].right &&
-          y >= barriers[i].top && y <= barriers[i].bottom){
+      if(/*x >= barriers[i].left &&  x <= barriers[i].right &&
+          y >= barriers[i].top && y <= barriers[i].bottom*/
+          collision(x, y, bulletSize, 0.1, barriers[i].x, barriers[i].y, barriers[i].wei, barriers[i].hei)){
        visible = false;
       }
       
@@ -70,8 +71,9 @@ class Bullet{
 class Barriers{
   void drawBarrier(float x, float y, float wei, float hei){
     //draw
-    fill(0,255,0);
-    rect(x,y,wei,hei);
+    //fill(200,205,0);
+    //rect(x,y,wei,hei);
+    image(platform,x,y,wei,hei);
     
     this.x=x;
     this.y=y;
@@ -163,8 +165,8 @@ class Weapon{
 
 class SmallGun extends Weapon{
   SmallGun(){
-    damage = 10;
-    maxBullets = bullets = 7;
+    damage = 8;
+    maxBullets = bullets = 12;
     coolDownTime = 0.5;
   }
   void showItem(float x, float y){
@@ -192,8 +194,8 @@ class SmallGun extends Weapon{
 
 class Ak extends Weapon{
   Ak(){
-    damage = 8;
-    maxBullets = bullets = 70;
+    damage = 10;
+    maxBullets = bullets = 30;
     coolDownTime = 0.1;
   }
   
@@ -221,6 +223,36 @@ class Ak extends Weapon{
   
 }
 
+class MachineGun extends Weapon{
+  MachineGun(){
+    damage = 7;
+    maxBullets = bullets = 75;
+    coolDownTime = 0.06;
+  }
+  
+  void showItem(float x, float y){
+    if(isItem){
+      //image(img,x,y);
+      rect(x,y,30,30);
+      for(int i=0;i<playersAmount;i++){
+        if (collision(players[i].x, players[i].y, players[i].wei, players[i].hei, x, y, size, size)){
+          isItem = false;
+          players[i].setWeapon(number);
+          
+          players[i].jumpingL = machineGunJumpingL;
+          players[i].jumpingR = machineGunJumpingR;
+          players[i].movingL = machineGunMovingL;
+          players[i].movingR = machineGunMovingR;
+          players[i].standingL = machineGunStandingL;
+          players[i].standingR = machineGunStandingR;
+          players[i].firingL = machineGunFiringL;
+          players[i].firingR = machineGunFiringR;
+        }
+      }
+    }
+  }
+  
+}
 
 // Class for animating a sequence of pictures
 class Animation {

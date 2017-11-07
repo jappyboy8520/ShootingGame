@@ -6,20 +6,33 @@ int gameMode = 0;
 void gameScreenControl(){
   //0 : Main menu
   if(gameMode==0){
-    background(200);
+    background(startpage);
     if(mousePressed) gameMode=1;
   }
   
   //1 : Gaming
   if(gameMode==1){
     
-    background(200);
-    barriers[0].drawBarrier(100,450,100,100);
-    
+    background(bground);
+    barriers[0].drawBarrier(20,400,240,10);
+    //bound barrier
     barriers[1].drawBarrier(0,0,800,20);
     barriers[2].drawBarrier(0,0,20,600);
     barriers[3].drawBarrier(780,0,20,600);
     barriers[4].drawBarrier(0,580,800,20);
+    // horizontal barrier
+    barriers[5].drawBarrier(400,200,70,10);
+    barriers[6].drawBarrier(300,300,60,10);
+    barriers[7].drawBarrier(700,100,80,10);
+    barriers[8].drawBarrier(540,400,240,10);
+    barriers[9].drawBarrier(20,240,130,10);
+    barriers[10].drawBarrier(200,100,40,10);
+    barriers[11].drawBarrier(350,460,100,10);
+    barriers[12].drawBarrier(520,280,100,10);
+    
+    //vertical barrier
+    barriers[13].drawBarrier(520,450,25,130);
+    barriers[14].drawBarrier(270,450,25,130);
     
     
     players[0].drawPlayer();
@@ -29,9 +42,11 @@ void gameScreenControl(){
     playerHitsBarrier();
     keyControl();
     
-    weapons[0].showItem(500,550);
-    weapons[1].showItem(300,550);
-    weapons[5].showItem(600,550);
+    weapons[0].showItem(600,550);
+    weapons[1].showItem(100,550); // small gunbox
+    weapons[5].showItem(200,550); // ak gunbox
+    weapons[8].showItem(700,550); // machine gunbox
+    
     
     for(int i=0;i<bulletLeftAmount;i++){
       if(bulletsLeft[i].visible){
@@ -47,6 +62,8 @@ void gameScreenControl(){
       }
     }
     
+
+    
     checkGameOver();
     
     //end Gaming
@@ -54,7 +71,8 @@ void gameScreenControl(){
   
   //2: game over
   if(gameMode==2){
-    background(200);
+    if(players[0].hp<=0) background(gameover01);
+    else if(players[1].hp<=0) background(gameover02);
     if(mousePressed){
       setup();
       gameMode = 0;
@@ -130,13 +148,13 @@ void playerHitsBarrier(){
       
       // player hits floor of Barrier
       if (players[j].y + players[j].hei >= barriers[i].top && players[j].y + players[j].hei <= barriers[i].top+collisionSize &&
-          players[j].x + players[j].wei >= barriers[i].left && players[j].x < barriers[i].right) { 
+          players[j].x + players[j].wei > barriers[i].left && players[j].x < barriers[i].right) { 
         makeBounceBottom(barriers[i].top, j);
       }
       
       // player hits ceiling of Barrier
       if (players[j].y <= barriers[i].bottom && players[j].y >= barriers[i].bottom-collisionSize &&
-          players[j].x + players[j].wei >= barriers[i].left && players[j].x < barriers[i].right) {
+          players[j].x + players[j].wei > barriers[i].left && players[j].x < barriers[i].right) {
         makeBounceTop(barriers[i].bottom, j);
       }
     }
