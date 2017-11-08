@@ -2,7 +2,7 @@ int bulletLeftAmount = 200, bulletRightAmount = 200;
 Bullet[] bulletsLeft = new Bullet[bulletLeftAmount];
 Bullet[] bulletsRight = new Bullet[bulletRightAmount];
 
-int playersAmount = 4;
+int playersAmount = 2;
 Player[] players = new Player[playersAmount];
 
 int weaponsAmount = 50;
@@ -53,6 +53,8 @@ PImage barrierDesert;
 
 void setup(){
   size(800,600);
+  barriersIndex = 0;
+  weaponsIndex = 0;
   backgroundDesert = loadImage("Images/background.jpg");
   startpage = loadImage("Images/startpage.png");
   barrierDesert = loadImage("Images/platform.png");
@@ -133,7 +135,7 @@ void setup(){
   }
   
   //small guns
-  for(i=weaponsIndex;i<smallGunAmount;i++){
+  for(i=weaponsIndex;i<weaponsIndex+smallGunAmount;i++){
     weapons[i] = new SmallGun();
     weapons[i].number = i;
   }

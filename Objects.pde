@@ -48,6 +48,7 @@ class Bullet{
          if(collision(x, y, bulletSize, 0.1, players[i].x, players[i].y, players[i].wei, players[i].hei)){
            players[i].hp -= damage;
            //after damage the player the bullet become invalid
+           visible=false;
            switchHurt = false;
          }
        }
@@ -56,9 +57,7 @@ class Bullet{
     //check hits the barrier
     for(int i=0;i<barriersIndex;i++){
       
-      if(/*x >= barriers[i].left &&  x <= barriers[i].right &&
-          y >= barriers[i].top && y <= barriers[i].bottom*/
-          collision(x, y, bulletSize, 0.1, barriers[i].x, barriers[i].y, barriers[i].wei, barriers[i].hei)){
+      if( collision(x, y, bulletSize, 0.1, barriers[i].x, barriers[i].y, barriers[i].wei, barriers[i].hei) ){
        visible = false;
       }
       
@@ -104,8 +103,6 @@ class Weapon{
     damage = 0;
     maxBullets = bullets = 0;
     coolDownTime = 0.0;
-    x = random(width);
-    y = random(height);
     /*jumpingL;
     jumpingR;
     movingL;
@@ -121,6 +118,10 @@ class Weapon{
     if(switchFire) startTime = currentTime;
     switchFire = false;
     if(currentTime - startTime >= coolDownTime) switchFire = true;
+  }
+  
+  void reset(){
+    bullets = maxBullets;
   }
   
   void showItem(){
@@ -186,7 +187,7 @@ class Weapon{
   int damage, bullets, number, maxBullets;
   float coolDownTime;
   float speedVert=0;
-  float x ,y, wei = weaponItemWei, hei = weaponItemHei;
+  float x = random(20,width-20) ,y = random(20,height-20), wei = weaponItemWei, hei = weaponItemHei;
   float startTime,currentTime;
   boolean switchFire = true, isItem = false, isGotten = false;
   PImage img;
@@ -201,8 +202,6 @@ class SmallGun extends Weapon{
     damage = 8;
     maxBullets = bullets = 12;
     coolDownTime = 0.5;
-    x = random(width);
-    y = random(height);
     
     img = pistolItem;
     jumpingL = pistolJumpingL;
@@ -222,8 +221,6 @@ class Ak extends Weapon{
     damage = 10;
     maxBullets = bullets = 30;
     coolDownTime = 0.1;
-    x = random(width);
-    y = random(height);
     
     img = akItem;
     jumpingL = akJumpingL;
@@ -242,8 +239,6 @@ class MachineGun extends Weapon{
     damage = 7;
     maxBullets = bullets = 75;
     coolDownTime = 0.06;
-    x = random(width);
-    y = random(height);
     
     img = machineGunItem;
     jumpingL = machineGunJumpingL;

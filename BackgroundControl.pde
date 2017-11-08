@@ -111,7 +111,7 @@ void menuControl(){
 void applyGravity() {
   
   //players
-  for(int i=0;i<4;i++){
+  for(int i=0;i<playersAmount;i++){
     players[i].speedVert += gravity;
     players[i].y += players[i].speedVert;
     players[i].speedVert -= players[i].speedVert * airfriction;
@@ -267,6 +267,7 @@ void generateWeapon(){
   }
   
   for(int i=0;i<weaponsIndex;i++){
+    weapons[i].reset();
     weapons[i].showItem();
   } 
   
