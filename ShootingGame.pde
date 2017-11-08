@@ -1,3 +1,9 @@
+import processing.sound.*;
+
+SoundFile a;
+String audioName = "pistolsound.mp3";
+String pp;
+
 int bulletLeftAmount = 200, bulletRightAmount = 200;
 Bullet[] bulletsLeft = new Bullet[bulletLeftAmount];
 Bullet[] bulletsRight = new Bullet[bulletRightAmount];
@@ -55,6 +61,14 @@ void setup(){
   size(800,600);
   barriersIndex = 0;
   weaponsIndex = 0;
+  switchGenerateWeapon = true;
+  
+  pp = sketchPath(audioName);
+  print(pp);
+  a = new SoundFile(this, "pistolsound.mp3");
+  
+  a.play();
+  
   backgroundDesert = loadImage("Images/background.jpg");
   startpage = loadImage("Images/startpage.png");
   barrierDesert = loadImage("Images/platform.png");

@@ -128,23 +128,25 @@ class Weapon{
     if(isItem){
       image(img,x,y,wei,hei);
       for(int i=0;i<playersAmount;i++){
-        if (collision(players[i].x, players[i].y, players[i].wei, players[i].hei, x, y, wei, hei)){
-          isItem = false;
-          isGotten = true;
-          
-          // if player has a weapon , discard it
-          if(players[i].weaponNumber != -1) weapons[players[i].weaponNumber].isGotten = false;
-          
-          players[i].setWeapon(number);
-          
-          players[i].jumpingL = jumpingL;
-          players[i].jumpingR = jumpingR;
-          players[i].movingL = movingL;
-          players[i].movingR = movingR;
-          players[i].standingL = standingL;
-          players[i].standingR = standingR;
-          players[i].firingL = firingL;
-          players[i].firingR = firingR;
+        if(isItem){
+          if (collision(players[i].x, players[i].y, players[i].wei, players[i].hei, x, y, wei, hei)){
+            isItem = false;
+            isGotten = true;
+            
+            // if player has a weapon , discard it
+            if(players[i].weaponNumber != -1) weapons[players[i].weaponNumber].isGotten = false;
+            
+            players[i].setWeapon(number);
+            
+            players[i].jumpingL = jumpingL;
+            players[i].jumpingR = jumpingR;
+            players[i].movingL = movingL;
+            players[i].movingR = movingR;
+            players[i].standingL = standingL;
+            players[i].standingR = standingR;
+            players[i].firingL = firingL;
+            players[i].firingR = firingR;
+          }
         }
       }
     }
@@ -187,7 +189,7 @@ class Weapon{
   int damage, bullets, number, maxBullets;
   float coolDownTime;
   float speedVert=0;
-  float x = random(20,width-20) ,y = random(20,height-20), wei = weaponItemWei, hei = weaponItemHei;
+  float x = random(40,width-40) ,y = random(40,height-40), wei = weaponItemWei, hei = weaponItemHei;
   float startTime,currentTime;
   boolean switchFire = true, isItem = false, isGotten = false;
   PImage img;

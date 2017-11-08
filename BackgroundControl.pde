@@ -256,26 +256,26 @@ boolean collision(float x1, float y1, float wei1, float hei1, float x2, float y2
 
 boolean switchGenerateWeapon = true;
 float startTime;
-float coolDownTime = 1;
+float coolDownTime = 20;
 void generateWeapon(){
   
   if( switchGenerateWeapon ){
     int randomWeapon = int(random(weaponsIndex));
     if(weapons[randomWeapon].isGotten == false){
+      weapons[randomWeapon].reset();
       weapons[randomWeapon].isItem = true;
     }
   }
   
   for(int i=0;i<weaponsIndex;i++){
-    weapons[i].reset();
     weapons[i].showItem();
   } 
   
-  coolDown();
+  generateCoolDown();
   
 }
 
-void coolDown(){
+void generateCoolDown(){
   currentTime = millis()/1000.0;
   if(switchGenerateWeapon) startTime = currentTime;
   switchGenerateWeapon = false;
