@@ -50,6 +50,7 @@ boolean playerButtonControl(int keyP, boolean switchP) {
   if(!switchP) players[1].isMoving = false;
     return isRight[1] = switchP;
     
+  case 101:
   case '5':
     return isFire[1] = switchP;
     

@@ -65,9 +65,23 @@ class Player{
     
     
     //draw the hp bar
+    
+    //white bar
     fill(255);
     rect(x,y-8,40,4);
-    fill(0,255,0);
+    //remain blood
+    if(50<hp&&hp<=100){
+      fill(0,255,0);
+    }
+    else if(20<hp&&hp<=50){
+      fill(255,128,0);
+    }
+    else if(0<hp&&hp<=20){
+      fill(255,0,0);
+    }
+    else{
+      fill(255,0,0);
+    }
     rect(x,y-8,40*hp/100,4);
     
     //draw the remains bullet

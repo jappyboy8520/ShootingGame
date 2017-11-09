@@ -1,8 +1,8 @@
-import processing.sound.*;
+//import processing.sound.*;
 
-SoundFile a;
-String audioName = "pistolsound.mp3";
-String pp;
+//SoundFile a;
+//String audioName = "pistolsound.mp3";
+//String pp;
 
 int bulletLeftAmount = 200, bulletRightAmount = 200;
 Bullet[] bulletsLeft = new Bullet[bulletLeftAmount];
@@ -54,6 +54,7 @@ Animation normalMovingL, normalMovingR;
 
 PImage backgroundDesert;
 PImage startpage;
+PImage imgControl;
 PImage gameover01, gameover02;
 PImage barrierDesert;
 
@@ -63,64 +64,60 @@ void setup(){
   weaponsIndex = 0;
   switchGenerateWeapon = true;
   
-  pp = sketchPath(audioName);
-  print(pp);
-  a = new SoundFile(this, "pistolsound.mp3");
+  backgroundDesert = loadImage("Images/Map/Desert/background.jpg");
+  barrierDesert = loadImage("Images/Map/Desert/platform.png");
   
-  a.play();
-  
-  backgroundDesert = loadImage("Images/background.jpg");
-  startpage = loadImage("Images/startpage.png");
-  barrierDesert = loadImage("Images/platform.png");
+  startpage = loadImage("Images/Menu/startpage.png");
+  imgControl = loadImage("Images/Menu/controldetail.png");
   smooth();
   
   //Gameover screen
-  gameover01 = loadImage("Images/gameovermode1.png");
-  gameover02 = loadImage("Images/gameovermode2.png");
+  gameover01 = loadImage("Images/Menu/gameovermode1.png");
+  gameover02 = loadImage("Images/Menu/gameovermode2.png");
   
   //images
   // animations for normal stickman
-  normalJumpingL = loadImage("Images/normal/walk/L-0000.png");
-  normalJumpingR = loadImage("Images/normal/walk/R-0000.png");
-  normalMovingL = new Animation("Images/normal/walk/L-", 4, 0.08);
-  normalMovingR = new Animation("Images/normal/walk/R-", 4, 0.08);
-  normalStandingL = loadImage("Images/normal/walk/L-0002.png");
-  normalStandingR = loadImage("Images/normal/walk/R-0002.png");
+  normalJumpingL = loadImage("Images/Character/normal/walk/L-0000.png");
+  normalJumpingR = loadImage("Images/Character/normal/walk/R-0000.png");
+  normalMovingL = new Animation("Images/Character/normal/walk/L-", 4, 0.08);
+  normalMovingR = new Animation("Images/Character/normal/walk/R-", 4, 0.08);
+  normalStandingL = loadImage("Images/Character/normal/walk/L-0002.png");
+  normalStandingR = loadImage("Images/Character/normal/walk/R-0002.png");
   
   // animations for the stickman which is with a pistol
-  pistolJumpingL = loadImage("Images/pistol/walk/L-0000.png");
-  pistolJumpingR = loadImage("Images/pistol/walk/R-0000.png");
-  pistolMovingL = new Animation("Images/pistol/walk/L-", 4, 0.08);
-  pistolMovingR = new Animation("Images/pistol/walk/R-", 4, 0.08);
-  pistolStandingL = loadImage("Images/pistol/walk/L-0002.png");
-  pistolStandingR = loadImage("Images/pistol/walk/R-0002.png");
-  pistolFiringL = new Animation("Images/pistol/shot/L-", 4, 0.01);
-  pistolFiringR = new Animation("Images/pistol/shot/R-", 4, 0.01);
+  pistolJumpingL = loadImage("Images/Character/pistol/walk/L-0000.png");
+  pistolJumpingR = loadImage("Images/Character/pistol/walk/R-0000.png");
+  pistolMovingL = new Animation("Images/Character/pistol/walk/L-", 4, 0.08);
+  pistolMovingR = new Animation("Images/Character/pistol/walk/R-", 4, 0.08);
+  pistolStandingL = loadImage("Images/Character/pistol/walk/L-0002.png");
+  pistolStandingR = loadImage("Images/Character/pistol/walk/R-0002.png");
+  pistolFiringL = new Animation("Images/Character/pistol/shot/L-", 4, 0.01);
+  pistolFiringR = new Animation("Images/Character/pistol/shot/R-", 4, 0.01);
   
   // animations for the stickman which is with an ak
-  akJumpingL = loadImage("Images/ak/walk/L-0000.png");
-  akJumpingR = loadImage("Images/ak/walk/R-0000.png");
-  akMovingL = new Animation("Images/ak/walk/L-", 4, 0.08);
-  akMovingR = new Animation("Images/ak/walk/R-", 4, 0.08);
-  akStandingL = loadImage("Images/ak/walk/L-stand.png");
-  akStandingR = loadImage("Images/ak/walk/R-stand.png");
-  akFiringL = new Animation("Images/ak/shot/L-", 4, 0.01);
-  akFiringR = new Animation("Images/ak/shot/R-", 4, 0.01);
+  akJumpingL = loadImage("Images/Character/ak/walk/L-0000.png");
+  akJumpingR = loadImage("Images/Character/ak/walk/R-0000.png");
+  akMovingL = new Animation("Images/Character/ak/walk/L-", 4, 0.08);
+  akMovingR = new Animation("Images/Character/ak/walk/R-", 4, 0.08);
+  akStandingL = loadImage("Images/Character/ak/walk/L-stand.png");
+  akStandingR = loadImage("Images/Character/ak/walk/R-stand.png");
+  akFiringL = new Animation("Images/Character/ak/shot/L-", 4, 0.01);
+  akFiringR = new Animation("Images/Character/ak/shot/R-", 4, 0.01);
   
   // animations for the stickman which is with a machineGun gun
-  machineGunJumpingL = loadImage("Images/machineGun/walk/L-0000.png");
-  machineGunJumpingR = loadImage("Images/machineGun/walk/R-0000.png");
-  machineGunMovingL = new Animation("Images/machineGun/walk/L-", 4, 0.08);
-  machineGunMovingR = new Animation("Images/machineGun/walk/R-", 4, 0.08);
-  machineGunStandingL = loadImage("Images/machineGun/walk/L-stand.png");
-  machineGunStandingR = loadImage("Images/machineGun/walk/R-stand.png");
-  machineGunFiringL = new Animation("Images/machineGun/shot/L-", 3, 0.01);
-  machineGunFiringR = new Animation("Images/machineGun/shot/R-", 3, 0.01);
+  machineGunJumpingL = loadImage("Images/Character/machineGun/walk/L-0000.png");
+  machineGunJumpingR = loadImage("Images/Character/machineGun/walk/R-0000.png");
+  machineGunMovingL = new Animation("Images/Character/machineGun/walk/L-", 4, 0.08);
+  machineGunMovingR = new Animation("Images/Character/machineGun/walk/R-", 4, 0.08);
+  machineGunStandingL = loadImage("Images/Character/machineGun/walk/L-stand.png");
+  machineGunStandingR = loadImage("Images/Character/machineGun/walk/R-stand.png");
+  machineGunFiringL = new Animation("Images/Character/machineGun/shot/L-", 3, 0.01);
+  machineGunFiringR = new Animation("Images/Character/machineGun/shot/R-", 3, 0.01);
   
   //item images
-  pistolItem = loadImage("Images/gunbox/pistol.png");
-  akItem = loadImage("Images/gunbox/ak.png");
-  machineGunItem = loadImage("Images/gunbox/gunbox.png");
+  pistolItem = loadImage("Images/Item/pistol.png");
+  akItem = loadImage("Images/Item/ak.png");
+  machineGunItem = loadImage("Images/Item/machinegun.png");
  
   int i;
   //left bullet

@@ -40,6 +40,15 @@ class Bullet{
       visible=false;
     }
     
+    
+    //check hits the barrier
+    for(int i=0;i<barriersIndex;i++){
+      if( collision(x, y, bulletSize, 0.1, barriers[i].x, barriers[i].y, barriers[i].wei, barriers[i].hei) ){
+       visible = false;
+       switchHurt = false;
+      }
+    }
+    
     //check hits the player
     for(int i=0;i<playersAmount;i++){
       /*if(x+bulletSize/2.0 >= players[i].x &&  x+bulletSize/2.0 <= players[i].x+collisionSize &&
@@ -54,14 +63,6 @@ class Bullet{
        }
     }
     
-    //check hits the barrier
-    for(int i=0;i<barriersIndex;i++){
-      
-      if( collision(x, y, bulletSize, 0.1, barriers[i].x, barriers[i].y, barriers[i].wei, barriers[i].hei) ){
-       visible = false;
-      }
-      
-    }
   }
 
   float x,y,speed,damage,gun;
@@ -99,7 +100,7 @@ class Barrier{
 
 class Weapon{
   Weapon(){
-    img = loadImage("Images/gunbox/gunbox.png");
+    //img = loadImage("Images/gunbox/pistol.png");
     damage = 0;
     maxBullets = bullets = 0;
     coolDownTime = 0.0;
@@ -201,7 +202,7 @@ class Weapon{
 class SmallGun extends Weapon{
   SmallGun(){
     
-    damage = 8;
+    damage = 20;
     maxBullets = bullets = 12;
     coolDownTime = 0.5;
     
@@ -238,9 +239,9 @@ class Ak extends Weapon{
 
 class MachineGun extends Weapon{
   MachineGun(){
-    damage = 7;
+    damage = 4;
     maxBullets = bullets = 75;
-    coolDownTime = 0.06;
+    coolDownTime = 0.05;
     
     img = machineGunItem;
     jumpingL = machineGunJumpingL;

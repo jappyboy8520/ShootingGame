@@ -3,7 +3,12 @@ float gravity = 0.1;
 int gameMode = 0;
 float currentTime;
 
-//0 : Main menu, 1 : Gaming, 2 : game over
+// for generating weapon //will be altered //////////////////////////////////////////////////////////////////
+boolean switchGenerateWeapon = true;
+float generateStartTime;
+float generateCoolDown = 6;
+
+//0 : Main menu, 1 : Gaming, 2 : game over, 3:control dedtail
 void gameScreenControl(){
   //0 : Main menu
   if( gameMode==0 ){
@@ -80,8 +85,13 @@ void gameScreenControl(){
     }
   }
   
-  //null
-  if(gameMode==3){  }
+  //3: control detail
+  if(gameMode==3){
+    background(imgControl);
+    if(mousePressed){
+      gameMode = 1;
+    }
+  }
   
 }
 
@@ -99,7 +109,8 @@ void checkGameOver(){
 void menuControl(){
   if(mousePressed){
     if(mouseX>=130 && mouseX<=280 && mouseY>=540 && mouseY<=595){
-      gameMode = 1;
+      gameMode = 3;
+      mousePressed = false;
     }
     if(mouseX>=540 && mouseX<=690 && mouseY>=540 && mouseY<=595){
       exit();
@@ -227,13 +238,13 @@ void makeBounceTop(float surface, int playerIndex) {
 void makeBounceLeft(float surface, int playerIndex){
   //players[playerIndex].left = false;
   players[playerIndex].x = surface;
-  players[playerIndex].speedVert = 0.5;
+  //players[playerIndex].speedVert = 0.5;
 }
 
 void makeBounceRight(float surface, int playerIndex){
   //players[playerIndex].left = true;
   players[playerIndex].x = surface-players[playerIndex].wei;
-  players[playerIndex].speedVert = 0.5;
+  //players[playerIndex].speedVert = 0.5;
 }
 
 
@@ -252,11 +263,8 @@ boolean collision(float x1, float y1, float wei1, float hei1, float x2, float y2
   }  
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//generate Weapon // will be altered //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-boolean switchGenerateWeapon = true;
-float startTime;
-float coolDownTime = 20;
 void generateWeapon(){
   
   if( switchGenerateWeapon ){
@@ -277,7 +285,7 @@ void generateWeapon(){
 
 void generateCoolDown(){
   currentTime = millis()/1000.0;
-  if(switchGenerateWeapon) startTime = currentTime;
+  if(switchGenerateWeapon) generateStartTime = currentTime;
   switchGenerateWeapon = false;
-  if(currentTime - startTime >= coolDownTime) switchGenerateWeapon = true;
+  if(currentTime - generateStartTime >= generateCoolDown) switchGenerateWeapon = true;
 }
